@@ -1,12 +1,12 @@
-# Lead Automation mit Zoho, n8n & Python 🧠
+# Lead Automation mit Zoho, n8n & Python 
 
 Dieses Projekt automatisiert die Verarbeitung von Leads, die über ein Zoho-Formular eingehen. n8n orchestriert die Abläufe, Python reichert Daten an, und Zoho CRM speichert die Ergebnisse.
 
 ## Stack
 
-- 🔗 Zoho Forms & CRM
-- ⚙️ n8n (Selbst gehostet oder n8n.cloud)
-- 🐍 Python (z. B. Datenanreicherung via API)
+-  Zoho Forms & CRM
+-  n8n (Selbst gehostet oder n8n.cloud)
+-  Python (z. B. Datenanreicherung via API)
 
 ## Verzeichnisstruktur
 
