@@ -1,0 +1,59 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-entry",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f4cda614-04ac-46a0-939d-b7e116c62f7b",
+      "name": "Webhook",
+      "webhookId": "2d4a861d-385b-4d0d-9208-67da0feeaaf7"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "def infer_industry(company_name: str) -> str:\n    keywords = {\n        \"media\": \"Medien\",\n        \"tech\": \"IT\",\n        \"software\": \"IT\",\n        \"consulting\": \"Beratung\",\n        \"health\": \"Gesundheit\",\n        \"finance\": \"Finanzen\"\n    }\n    name = company_name.lower()\n    for key, branch in keywords.items():\n        if key in name:\n            return branch\n    return \"Allgemein\"\n\ndef estimate_size(company_mail: str) -> str:\n    domain = company_mail.split('@')[-1]\n    personal_domains = [\"gmail.com\", \"web.de\", \"hotmail.com\", \"gmx.de\", \"yahoo.com\"]\n    if domain in personal_domains:\n        return \"small\"\n    return \"large\"\n\ndef score_lead(company_mail: str) -> str:\n    domain = company_mail.split('@')[-1]\n    personal_domains = [\"gmail.com\", \"web.de\", \"hotmail.com\", \"gmx.de\", \"yahoo.com\"]\n    return \"less valuable\" if domain in personal_domains else \"valuable\"\n\ninput_data = items[0][\"json\"].get(\"body\", {})\n\ncompany = input_data.get(\"company_name\", \"\")\nemail = input_data.get(\"company_mail\", \"\")\n\nprint(\"DEBUG company_name:\", company)\nprint(\"DEBUG company_mail:\", email)\n\nenriched = dict(input_data)\nenriched[\"industry\"] = infer_industry(company)\nenriched[\"company_size\"] = estimate_size(email)\nenriched[\"score\"] = score_lead(email)\n\nreturn [{\"json\": enriched}]\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "c0919858-9466-48fd-b76c-b022eca51c26",
+      "name": "Code"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7a35102f-6f79-40b3-a2f4-1f7bdf28b2be",
+  "meta": {
+    "instanceId": "41c6f046cd6980125b2ad29e644f681ca32eadcedf9f797f80b991c8f00adcbe"
+  },
+  "id": "tgpIhEwSrYqx2m11",
+  "tags": []
+}
